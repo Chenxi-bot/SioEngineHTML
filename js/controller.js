@@ -1,14 +1,6 @@
 // 当引擎初始化时，会创建一个controller对象，该对象将管理游戏大部分内容
 
-function readFile(path) {
-    const fs = require('fs');
-    var data = fs.readFileSync(path);
-    return data.toString();
-}
-
-var controller = {};    // 引擎全局控制，游戏流程由这一个管理
-
-controller.init = function () {
+function Controller() {
 
     // 版本类，不影响流程进行，主要是作者进行版本控制与签名
     this.name = "UnLoad"; // 游戏名称
@@ -20,7 +12,5 @@ controller.init = function () {
 
 }
 
-controller.init();
+var controller = new Controller();    // 引擎全局控制，游戏流程由这一个管理
 console.log(controller);
-
-// 吃饭去了，回来继续

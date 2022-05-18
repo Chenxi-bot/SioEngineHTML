@@ -1,0 +1,33 @@
+#loadingPage {
+    width: 1280px;
+    height: 720px;
+    background-color: yellow;
+    margin: auto;
+}
+
+.bgimage {
+    pointer-events: none;
+    position: absolute;
+}
+
+#fgimage {
+    pointer-events: none;
+    position: absolute;
+    overflow: hidden;
+    height: 720px;
+    width: 1280px;
+}
+
+.ui {
+    pointer-events: none;
+    position: absolute;
+}
+
+#contain {
+    position: absolute;
+    left: 320px;
+    top: 520px;
+    color: white;
+    font-size: 24px;
+    font-family: 幼圆;
+}

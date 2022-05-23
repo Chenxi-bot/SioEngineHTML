@@ -1,7 +1,9 @@
 // 动画的js文件，分出来便于查找与修改
 
-function click() {  // displayPreWord Anime.DPW();
-    var info = document.getElementById("text").innerHTML;
+function click_anime() {  // displayPreWord Anime.DPW();
+    var info = "";
+    if (arguments != null)
+        info = arguments[0];
     var length = info.length;
     var now = 0;
     var sub = "";
@@ -12,3 +14,14 @@ function click() {  // displayPreWord Anime.DPW();
             clearInterval(id);
     }, 50);
 }
+
+document.body.addEventListener("click", function () {
+    if (controller.line++ <= scenario.length)
+    {
+        document.getElementById("text").innerHTML = "";
+        console.log("nowLine: ", controller.line);
+        click_anime(scenario.content[controller.line].text);
+        document.getElementById("name").innerHTML = scenario.content[controller.line].name;
+    }
+    
+});

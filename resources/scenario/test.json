@@ -1,0 +1,359 @@
+{
+    "name": "测试章节",
+    "id": 1,
+    "length": 22,
+    "content": [
+        {
+            "name": "？？？",
+            "text": "哇！这个烤卷真好吃！",
+            "anime": {
+                "picname": "mx001",
+                "picfp": "Example\\fgimage\\QT\\mx001.png",
+                "posx": 250.0,
+                "posy": -20.0,
+                "anime": "Jump",
+                "soundpath": "",
+                "repeat": "",
+                "parameter": [
+                    ""
+                ]
+            }
+        },
+        {
+            "name": "",
+            "text": "这个女孩是从哪冒出来的…而且蜷缩肩膀用餐的样子，真是很可爱呢。",
+            "anime": {
+                "picname": "",
+                "picfp": "",
+                "posx": "",
+                "posy": "",
+                "anime": "",
+                "soundpath": "",
+                "repeat": "",
+                "parameter": [
+                    ""
+                ]
+            }
+        },
+        {
+            "name": "？？？",
+            "text": "松软的口感~配合美丽的造型~是可人呐~",
+            "anime": {
+                "picname": "mx002",
+                "picfp": "Example\\fgimage\\QT\\mx002.png",
+                "posx": 250.0,
+                "posy": -20.0,
+                "anime": "Wave",
+                "soundpath": "",
+                "repeat": "",
+                "parameter": [
+                    ""
+                ]
+            }
+        },
+        {
+            "name": "郭恒逸",
+            "text": "喂，真的有这么好吃吗？",
+            "anime": {
+                "picname": "",
+                "picfp": "",
+                "posx": "",
+                "posy": "",
+                "anime": "",
+                "soundpath": "",
+                "repeat": "",
+                "parameter": [
+                    ""
+                ]
+            }
+        },
+        {
+            "name": "？？？",
+            "text": "哇~你、你是谁…我是外地人，不能随便和陌生人打招呼的。",
+            "anime": {
+                "picname": "mx003",
+                "picfp": "Example\\fgimage\\QT\\mx003.png",
+                "posx": 250.0,
+                "posy": -20.0,
+                "anime": "",
+                "soundpath": "",
+                "repeat": "",
+                "parameter": [
+                    ""
+                ]
+            }
+        },
+        {
+            "name": "郭恒逸",
+            "text": "……",
+            "anime": {
+                "picname": "",
+                "picfp": "",
+                "posx": "",
+                "posy": "",
+                "anime": "",
+                "soundpath": "",
+                "repeat": "",
+                "parameter": [
+                    ""
+                ]
+            }
+        },
+        {
+            "name": "",
+            "text": "这女孩有点胆小啊。而且直接自爆外地人。",
+            "anime": {
+                "picname": "",
+                "picfp": "",
+                "posx": "",
+                "posy": "",
+                "anime": "",
+                "soundpath": "",
+                "repeat": "",
+                "parameter": [
+                    ""
+                ]
+            }
+        },
+        {
+            "name": "郭恒逸",
+            "text": "咳，我是枫华高中的郭恒逸。你吃这么多，不会噎着吧。",
+            "anime": {
+                "picname": "",
+                "picfp": "",
+                "posx": "",
+                "posy": "",
+                "anime": "",
+                "soundpath": "",
+                "repeat": "",
+                "parameter": [
+                    ""
+                ]
+            }
+        },
+        {
+            "name": "",
+            "text": "我指了指她桌上狼藉的一片包装。",
+            "anime": {
+                "picname": "",
+                "picfp": "",
+                "posx": "",
+                "posy": "",
+                "anime": "",
+                "soundpath": "",
+                "repeat": "",
+                "parameter": [
+                    ""
+                ]
+            }
+        },
+        {
+            "name": "？？？",
+            "text": "啊，对啊！应该点下饮料。",
+            "anime": {
+                "picname": "mx004",
+                "picfp": "Example\\fgimage\\QT\\mx004.png",
+                "posx": 250.0,
+                "posy": -20.0,
+                "anime": "",
+                "soundpath": "",
+                "repeat": "",
+                "parameter": [
+                    ""
+                ]
+            }
+        },
+        {
+            "name": "",
+            "text": "你有在听我的讽刺吗？",
+            "anime": {
+                "picname": "",
+                "picfp": "",
+                "posx": "",
+                "posy": "",
+                "anime": "",
+                "soundpath": "",
+                "repeat": "",
+                "parameter": [
+                    ""
+                ]
+            }
+        },
+        {
+            "name": "",
+            "text": "不过，既然她想点饮料…",
+            "anime": {
+                "picname": "",
+                "picfp": "",
+                "posx": "",
+                "posy": "",
+                "anime": "",
+                "soundpath": "",
+                "repeat": "",
+                "parameter": [
+                    ""
+                ]
+            }
+        },
+        {
+            "name": "郭恒逸",
+            "text": "这里的“枫音香茶”不错哦。",
+            "anime": {
+                "picname": "mx005",
+                "picfp": "Example\\fgimage\\QT\\mx005.png",
+                "posx": 250.0,
+                "posy": -20.0,
+                "anime": "",
+                "soundpath": "",
+                "repeat": "",
+                "parameter": [
+                    ""
+                ]
+            }
+        },
+        {
+            "name": "？？？",
+            "text": "真的吗？听起来很不错呢。",
+            "anime": {
+                "picname": "",
+                "picfp": "",
+                "posx": "",
+                "posy": "",
+                "anime": "",
+                "soundpath": "",
+                "repeat": "",
+                "parameter": [
+                    ""
+                ]
+            }
+        },
+        {
+            "name": "郭恒逸",
+            "text": "我是这里的老顾客了。这热茶的冰块中是有特殊腌制的红枫。溶解后温度适宜，相当不错。",
+            "anime": {
+                "picname": "",
+                "picfp": "",
+                "posx": "",
+                "posy": "",
+                "anime": "",
+                "soundpath": "",
+                "repeat": "",
+                "parameter": [
+                    ""
+                ]
+            }
+        },
+        {
+            "name": "？？？",
+            "text": "嘿嘿，真是谢谢啦。那我就来一杯吧。",
+            "anime": {
+                "picname": "mx004",
+                "picfp": "Example\\fgimage\\QT\\mx004.png",
+                "posx": 250.0,
+                "posy": -20.0,
+                "anime": "",
+                "soundpath": "",
+                "repeat": "",
+                "parameter": [
+                    ""
+                ]
+            }
+        },
+        {
+            "name": "郭恒逸",
+            "text": "嗯，我已经点了一杯。正好送给你吧。",
+            "anime": {
+                "picname": "",
+                "picfp": "",
+                "posx": "",
+                "posy": "",
+                "anime": "",
+                "soundpath": "",
+                "repeat": "",
+                "parameter": [
+                    ""
+                ]
+            }
+        },
+        {
+            "name": "？？？",
+            "text": "是吗？你果然是好人呢~",
+            "anime": {
+                "picname": "mx006",
+                "picfp": "Example\\fgimage\\QT\\mx006.png",
+                "posx": 250.0,
+                "posy": -20.0,
+                "anime": "",
+                "soundpath": "",
+                "repeat": "",
+                "parameter": [
+                    ""
+                ]
+            }
+        },
+        {
+            "name": "郭恒逸",
+            "text": "…………",
+            "anime": {
+                "picname": "",
+                "picfp": "",
+                "posx": "",
+                "posy": "",
+                "anime": "",
+                "soundpath": "",
+                "repeat": "",
+                "parameter": [
+                    ""
+                ]
+            }
+        },
+        {
+            "name": "",
+            "text": "好人吗…",
+            "anime": {
+                "picname": "",
+                "picfp": "",
+                "posx": "",
+                "posy": "",
+                "anime": "",
+                "soundpath": "",
+                "repeat": "",
+                "parameter": [
+                    ""
+                ]
+            }
+        },
+        {
+            "name": "",
+            "text": "大概也只是这个女孩的眼中吧。",
+            "anime": {
+                "picname": "",
+                "picfp": "",
+                "posx": "",
+                "posy": "",
+                "anime": "",
+                "soundpath": "",
+                "repeat": "",
+                "parameter": [
+                    ""
+                ]
+            }
+        },
+        {
+            "name": "",
+            "text": "对于枫怡和海音……我或许做的并不够好。",
+            "anime": {
+                "picname": "",
+                "picfp": "",
+                "posx": "",
+                "posy": "",
+                "anime": "",
+                "soundpath": "",
+                "repeat": "",
+                "parameter": [
+                    ""
+                ]
+            }
+        }
+    ]
+}

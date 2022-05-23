@@ -5,7 +5,7 @@ class Chenxi {
     constructor() {
 
     }
-    Add(){
+    Add() {
         if (arguments.length == 0) {
             return 0;
         }
@@ -19,9 +19,3 @@ class Chenxi {
         }
     }
 }
-
-class Tools {
-    static Chenxi = new Chenxi();
-}
-
-console.log(Tools.Chenxi.Add(1,2,3,4));

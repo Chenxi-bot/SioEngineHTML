@@ -5,7 +5,7 @@
     margin: auto;
 }
 
-.bgimage {
+#bgimage {
     pointer-events: none;
     position: absolute;
 }
@@ -18,16 +18,21 @@
     width: 1280px;
 }
 
-.ui {
+#ui {
     pointer-events: none;
     position: absolute;
 }
 
 #contain {
+    /*这个是文字框的格式，如果换别的UI素材的话记得修改一下*/
     position: absolute;
-    left: 320px;
-    top: 520px;
+    left: 25%;
+    top: 72%;
     color: white;
     font-size: 24px;
     font-family: 幼圆;
+}
+
+body {
+    user-select: none;
 }

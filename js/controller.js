@@ -1,5 +1,6 @@
-// 当引擎初始化时，会创建一个controller对象，该对象将管理游戏大部分内容
-
+/** 
+ * 当引擎初始化时，会创建一个controller对象，该对象将管理游戏大部分内容
+ */
 class Controller {
 
     constructor() {
@@ -24,7 +25,7 @@ class Controller {
         this.scenario;  // 剧本，重中之重
         this.clickId = undefined;   // 记录播放的循环id，控制左键点击事件
         this.decoration = false;    // 文字装饰器，算是保留功能，是delay()里面的decoration()函数
-
+        this.historyEnd;
         return this;
     }
 
@@ -52,8 +53,9 @@ class Controller {
     }
 }
 
-// 人物图层，作为子对象方便管理
-// 结果用处并不大，不如不用
+/** 
+ * 人物图层，作为子对象方便管理，结果用处并不大，不如不用，早晚有一天把你删了
+ */
 class imageLayer {
 
     constructor(src, name) {
@@ -69,9 +71,11 @@ class imageLayer {
     }
 }
 
-// 图层管理器，功能正在完成中
+/**
+ * 图层管理器，功能正在完成中
+ */
 class imageController {
-
+    // TODO: 动画优化
     constructor() {
         this.fgimage = document.getElementById("fgiamge");
     }
@@ -95,20 +99,26 @@ class imageController {
         return ("图层 " + name + " 已删除");
     }
 
-    
-    // replaceImage()为最终接口，详细见注释
-    // 替换图片，按照名字替换，位置参数可选，相关动画以后再做
+
+    /** replaceImage()为最终接口，详细见注释
+     * @function 图片动画函数
+     * @description 图片动画，包括添加、替换和删除图片
+     * @param name 如果不存在就添加图片，如果存在下一步
+     * @param src 如果为空，代表删除图片
+     * @param posx x坐标，留空则不变
+     * @param posy y坐标，同上
+     */
     replaceImage(name, src, posx, posy) {
         let ele = document.getElementById(name);
 
         // 如果当前不存在id为name的图层，调用addImage()函数
         if (ele == null)
             return this.addImage(src, posx, posy, name);
-        
+
         // 如果并没有传入src参数，调用deleteImage()函数
         if (src == undefined)
             return this.deleteImage(name);
-        
+
         ele.getElementsByTagName("img")[0].src = src;
 
         // 检查是否有pos参数传入，没有就不变
@@ -116,7 +126,7 @@ class imageController {
             ele.getElementsByTagName("img")[0].style.marginLeft = String(posx) + "px";
         if (posy != undefined)
             ele.getElementsByTagName("img")[0].marginTop = String(posy) + "px"
-        
+
         return ("图层 " + name + " 已替换，" + "路径：" + src);
     }
 }
@@ -128,9 +138,12 @@ controller.loadScenario("https://sioengine.oss-cn-beijing.aliyuncs.com/scenario/
 // 实例化图层管理器
 var iCtrl = new imageController();
 
-// 延迟类，需要等整个网页加载完成以后使用
-function delay() {
 
+function delay() {
+    /**
+     @function 延迟函数集合
+     @description 这个至于什么时候调用随着项目推进还要改一改，但总而言之就是全部加载完毕以后再调用就是了
+     */
     function click_anime() {    // 播放动画，每个字逐个显示出来
         let info = "";
         if (arguments != undefined)
@@ -156,7 +169,16 @@ function delay() {
         else return arguments[0];
     }
 
-    function left_click() {   // 动画播放
+    function leftClick() {   // 动画播放
+        // 如果在看历史记录取消点击动作
+        if (document.getElementById("history").style.visibility == "visible") {
+            if (document.getElementById("history").scrollTop == controller.historyEnd) {
+                rightClick();
+            }
+            else {
+                return;
+            }
+        }
 
         // 如果当前有正在播放的动画，立即结束动画并直接显示全部内容
         // 等效于左键双击
@@ -180,12 +202,12 @@ function delay() {
             // 关于图片切换
             // 要做的东西有点多
             if (controller.scenario.content[controller.line].anime.picfp != "") {
-                let info = 
-                iCtrl.replaceImage(
-                    controller.scenario.content[controller.line].anime.name,
-                    controller.scenario.content[controller.line].anime.picfp,
-                    controller.scenario.content[controller.line].anime.posx,
-                    controller.scenario.content[controller.line].anime.posy);
+                let info =
+                    iCtrl.replaceImage(
+                        controller.scenario.content[controller.line].anime.name,
+                        controller.scenario.content[controller.line].anime.picfp,
+                        controller.scenario.content[controller.line].anime.posx,
+                        controller.scenario.content[controller.line].anime.posy);
                 console.log(info);
             }
         }
@@ -195,12 +217,32 @@ function delay() {
         if (uiLayer.style.visibility == "hidden")
             uiLayer.style.visibility = "visible";
 
-
+        // 添加历史记录
+        function addHistory(str) {
+            let record = document.createElement("p");
+            record.innerHTML = str;
+            let history = document.getElementById("history");
+            history.appendChild(record);
+        }
+        if (controller.scenario.content[controller.line].name != "")
+            addHistory(controller.scenario.content[controller.line].name);
+        addHistory(controller.scenario.content[controller.line].text);
     }
 
-    document.body.addEventListener("click", left_click);    // 监听左键动作
+    function historyMenu() {    // 召唤历史记录
+        // FIXME: 目前有一个bug，就是调出历史记录后鼠标需要动一下，不然滑轮操作是不能使用的
+        document.getElementById("history").style.visibility = "visible";    // 使图层可见
+        document.getElementById("history").scrollTop = document.getElementById("history").offsetHeight;  // 使对话在最底部
+        controller.historyEnd = document.getElementById("history").scrollTop;
+    }
 
-    document.oncontextmenu = function () {  // 标准右键动作，隐藏ui和文字层，同时取消默认菜单
+    document.body.addEventListener("click", leftClick);    // 监听左键动作
+
+    function rightClick() {  // 标准右键动作，隐藏ui和文字层，同时取消默认菜单
+        if (document.getElementById("history").style.visibility == "visible") {
+            document.getElementById("history").style.visibility = "hidden";
+            return false;
+        }
         let uiLayer = document.getElementById("ui");
         if (uiLayer.style.visibility == "visible")
             uiLayer.style.visibility = "hidden";
@@ -209,8 +251,14 @@ function delay() {
         return false;
     };
 
-    document.addEventListener("wheel", function (event) {
+    document.oncontextmenu = rightClick;
+
+    document.addEventListener("wheel", function (event) {   // 监听滑轮动作，向下相当于鼠标左键，向上召唤历史菜单
+        console.log(event.deltaY);
+        console.log(document.getElementById("history").style.visibility == "hidden");
         if (event.deltaY > 0)
-            left_click();
+            leftClick();
+        if ((event.deltaY < 0) && (document.getElementById("history").style.visibility == "hidden"))
+            historyMenu();
     });
 }

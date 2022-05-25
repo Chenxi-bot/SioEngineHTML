@@ -33,6 +33,15 @@
     font-family: 幼圆;
 }
 
+#history {
+    background-color: lightpink;
+    opacity: 70%;
+    width: 1280px;
+    height: 720px;
+    position: absolute;
+    overflow: auto;
+}
+
 body {
     -webkit-user-select: none;
     user-select: none;

@@ -13,7 +13,8 @@ class Scenario:
         tmp = dict()
         tmp["name"] = value[1]
         tmp["text"] = value[2]
-        tmp["anime"] = {"picname": value[3], "picfp":value[4],"posx":value[5], "posy":value[6], "anime":value[7], "soundpath":value[8], "repeat":value[9], "parameter":value[10].split(";")}
+        tmp["anime"] = {"picname": value[3], "picfp":value[4],"posx":value[5], "posy":value[6], "anime":value[7], "soundpath":value[8], "repeat":value[9], "parameter":(str(value[10])).split(";")}
+        tmp["script"] = value[11]
         self.content.append(tmp)
 
     def readExcel(self, fp):
@@ -29,5 +30,5 @@ class Scenario:
             json.dump(result, f, ensure_ascii=False)
 
 instance = Scenario("测试章节", 1)
-instance.readExcel("tools\\script\\tools.xls")
-instance.write("resources\\scenario\\test.json")
+instance.readExcel("tools\\script\\demo.xls")
+instance.write("resources\\scenario\\demo.json")

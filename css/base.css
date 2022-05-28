@@ -41,6 +41,9 @@
     position: absolute;
     overflow: auto;
 }
+#history > p {
+    margin-top: auto;
+}
 
 body {
     -webkit-user-select: none;

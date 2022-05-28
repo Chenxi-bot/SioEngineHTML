@@ -14,7 +14,7 @@ class Controller {
         // 流程类，主要是存档相关，和游戏进程有关，以及一些奇奇怪怪的东西
         this.firstRead = false; // 是否首次游玩，可以用于演出
         this.charpeter = 0; // 当前阅读的章数
-        this.line = 0;  // 当前阅读的行数
+        this.line = -1;  // 当前阅读的行数
         this.save
 
 
@@ -89,6 +89,7 @@ class imageController {
         img.img.style.position = "absolute";
         img.img.style.marginLeft = String(posx) + "px";
         img.img.style.marginTop = String(posy) + "px";
+        img.img.id = name;
         return ("图层 " + name + " 已创建，" + "路径：" + src);
     }
 
@@ -108,7 +109,7 @@ class imageController {
      * @param posx x坐标，留空则不变
      * @param posy y坐标，同上
      */
-    replaceImage(name, src, posx, posy) {
+    replaceImage(name, src, posx, posy, time) {
         let ele = document.getElementById(name);
 
         // 如果当前不存在id为name的图层，调用addImage()函数
@@ -121,6 +122,9 @@ class imageController {
 
         ele.getElementsByTagName("img")[0].src = src;
 
+        if (time != undefined) {
+            // TODO: 动画，有时间再写，折磨ing
+        }
         // 检查是否有pos参数传入，没有就不变
         if (posx != undefined)
             ele.getElementsByTagName("img")[0].style.marginLeft = String(posx) + "px";
@@ -133,7 +137,7 @@ class imageController {
 
 // 实例化管理器
 var controller = new Controller();
-controller.loadScenario("https://sioengine.oss-cn-beijing.aliyuncs.com/scenario/test.json");
+controller.loadScenario("https://sioengine.oss-cn-beijing.aliyuncs.com/scenario/demo.json");
 
 // 实例化图层管理器
 var iCtrl = new imageController();
@@ -170,6 +174,14 @@ function delay() {
     }
 
     function leftClick() {   // 动画播放
+        // 如果在播放上一句的音频则清除
+        try {
+            let lastPlay = document.getElementById("nowPlay");
+            lastPlay.remove();
+        } catch (error) {
+            console.log(error);
+        }
+
         // 如果在看历史记录取消点击动作
         if (document.getElementById("history").style.visibility == "visible") {
             if (document.getElementById("history").scrollTop == controller.historyEnd) {
@@ -204,14 +216,43 @@ function delay() {
             if (controller.scenario.content[controller.line].anime.picfp != "") {
                 let info =
                     iCtrl.replaceImage(
-                        controller.scenario.content[controller.line].anime.name,
+                        controller.scenario.content[controller.line].anime.picname,
                         controller.scenario.content[controller.line].anime.picfp,
                         controller.scenario.content[controller.line].anime.posx,
-                        controller.scenario.content[controller.line].anime.posy);
+                        controller.scenario.content[controller.line].anime.posy,
+                        controller.scenario.content[controller.line].anime.parameter[0]
+                    );
                 console.log(info);
             }
         }
 
+        // 播放声音
+        if (controller.scenario.content[controller.line].anime.soundpath != "") {
+            if (controller.scenario.content[controller.line].anime.repeat == "bgm") {
+                try {
+                    let bgm = document.getElementById("bgm");
+                    bgm.src = controller.scenario.content[controller.line].anime.soundpath;
+                    bgm.play();
+                } catch (error) {
+                    let bgm = document.createElement("audio");
+                    bgm.src = controller.scenario.content[controller.line].anime.soundpath;
+                    bgm.id = "bgm";
+                    bgm.play();
+                }
+                finally {
+                    
+                }
+            }
+            else {
+                let sound = document.createElement("audio");
+                sound.id = "nowPlay";
+                sound.src = controller.scenario.content[controller.line].anime.soundpath;
+                sound.loop = (controller.scenario.content[controller.line].anime.repeat == true);
+                let ui = document.getElementById("ui");
+                ui.appendChild(sound);
+                sound.play();
+            }
+        }
         // 如果ui隐藏，显示ui
         let uiLayer = document.getElementById("ui");
         if (uiLayer.style.visibility == "hidden")
@@ -227,6 +268,18 @@ function delay() {
         if (controller.scenario.content[controller.line].name != "")
             addHistory(controller.scenario.content[controller.line].name);
         addHistory(controller.scenario.content[controller.line].text);
+
+        // 调用自定义脚本
+        if (controller.scenario.content[controller.line].script != "") {
+            console.log("script");
+            new Function(controller.scenario.content[controller.line].script)();
+        }
+        // 如果文本为空，则自动播放下一句
+        if (controller.scenario.content[controller.line].text == '') {
+            console.log("continue");
+            leftClick();
+            leftClick();
+        }
     }
 
     function historyMenu() {    // 召唤历史记录

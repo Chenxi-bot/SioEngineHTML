@@ -2,12 +2,20 @@
 <html>
 
 <head>
+    <base href="">
+    <!--按照要求上传到指定位置后可以更改base链接-->
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
     <meta charset="utf-8">
     <meta name="keywords" content="SioEngine">
     <meta lang="Chinese">
-    <title>无标题文档</title>
+    <title>如果出现此标题，请检查js</title>
     <script src="../js/jquery-3.6.0.js"></script>
     <!--在想jQuery要不要删掉，目前来说应该是什么用都没有的-->
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <script src="bootstrap/js/bootstrap.min.js"></script>
     <script src="js/tools.js"></script>
     <script src="js/controller.js"></script>
     <link rel="stylesheet" href="css/base.css">
@@ -22,15 +30,35 @@
         </div>
         <div id="fgimage">
         </div>
-        <div id="ui" style="visibility: hidden;">
-            <img src="Example/data/image/duihuakuang.png" alt="" class="ui">
+        <div id="ui" style="visibility: hidden; width: 1280px; height:720px">
+            <div id="uicolor"></div>
             <div id="contain">
                 <p id="name"></p>
                 <p id="text"></p>
             </div>
         </div>
         <div id="history" style="visibility: hidden;">
-
+        </div>
+        <div id="sl" style="visibility: hidden;" class="container-fluid">
+            <div class="row">
+                <div class="card offset-1 col-4" id="card1">
+                    <div class="card-header">head</div>
+                    <div class="card-body">body</div>
+                </div>
+                <div class="card offset-2 col-4" id="card2">2</div>
+            </div>
+            <div class="row">
+                <div class="card offset-1 col-4" id="card3">3</div>
+                <div class="card offset-2 col-4" id="card4">4</div>
+            </div>
+            <div class="row">
+                <div class="card offset-1 col-4" id="card5">5</div>
+                <div class="card offset-2 col-4" id="card6">6</div>
+            </div>
+            <div class="row">
+                <div class="card offset-1 col-4" id="card7">7</div>
+                <div class="card offset-2 col-4" id="card8">8</div>
+            </div>
         </div>
     </div>
 </body>

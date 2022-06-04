@@ -21,3 +21,4 @@ package-lock.json
 css/help.css
 *.note
 note/
+tools\upload.py

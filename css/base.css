@@ -23,11 +23,23 @@
     position: absolute;
 }
 
+#uicolor {
+    background-color: cyan;
+    opacity: 60%;
+    width: 80%;
+    height: 25%;
+    top: 74%;
+    left: 10%;
+    position: inherit;
+    border: 2px ridge;
+    border-radius: 30px;
+}
+
 #contain {
     /*这个是文字框的格式，如果换别的UI素材的话记得修改一下*/
     position: absolute;
     left: 25%;
-    top: 72%;
+    top: 76%;
     color: white;
     font-size: 24px;
     font-family: 幼圆;
@@ -53,4 +65,27 @@ body {
 
 .already {
     color: yellow;
+}
+
+#sl > .row {
+    height: 25%;
+}
+
+#sl1 {
+    position: absolute;
+    top: 0%;
+}
+
+#sl2 {
+    position: absolute;
+    top: 25%;
+}
+#sl3 {
+    position: absolute;
+    top: 50%;
+}
+
+#sl4 {
+    position: absolute;
+    top: 75%;
 }

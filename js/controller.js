@@ -15,7 +15,8 @@ class Controller {
         this.firstRead = false; // 是否首次游玩，可以用于演出
         this.charpeter = 0; // 当前阅读的章数
         this.line = -1;  // 当前阅读的行数
-        this.save
+        this.Save;
+        this.save = [];
 
 
         // 内容类，主要是游戏内容相关
@@ -25,7 +26,6 @@ class Controller {
         this.scenario;  // 剧本，重中之重
         this.clickId = undefined;   // 记录播放的循环id，控制左键点击事件
         this.decoration = false;    // 文字装饰器，算是保留功能，是delay()里面的decoration()函数
-        this.historyEnd;
         return this;
     }
 
@@ -137,7 +137,7 @@ class imageController {
 
 // 实例化管理器
 var controller = new Controller();
-controller.loadScenario("https://sioengine.oss-cn-beijing.aliyuncs.com/scenario/demo.json");
+controller.loadScenario("https://sioengine.oss-cn-beijing.aliyuncs.com/demo.json");
 
 // 实例化图层管理器
 var iCtrl = new imageController();
@@ -174,18 +174,12 @@ function delay() {
     }
 
     function leftClick() {   // 动画播放
-        // 如果在播放上一句的音频则清除
-        try {
-            let lastPlay = document.getElementById("nowPlay");
-            lastPlay.remove();
-        } catch (error) {
-            console.log(error);
-        }
 
         // 如果在看历史记录取消点击动作
         if (document.getElementById("history").style.visibility == "visible") {
             if (document.getElementById("history").scrollTop == controller.historyEnd) {
                 rightClick();
+                return;
             }
             else {
                 return;
@@ -200,11 +194,23 @@ function delay() {
             document.getElementById("text").innerHTML = controller.scenario.content[controller.line].text;
             return;
         }
+        
+        // 如果ui隐藏，显示ui；并且取消当前左键动作
+        let uiLayer = document.getElementById("ui");
+        if (controller.line >= 0) {
+            if (uiLayer.style.visibility == "hidden" && controller.scenario.content[controller.line].text != "") {
+                uiLayer.style.visibility = "visible";
+                return;
+            }
+        }
 
         // 播放逻辑
         // 如果当前行数（偏移量）小于总行数（小于等于总行数-1）
         // 先将清除文字，然后执行播放动画函数（动画为异步），同时替换名字（如果有的话）
         if (controller.line++ < controller.scenario.length) {
+            // FIXME: 让ui显示，但是不知道出了什么奇怪的逻辑错误只能这里再写一遍
+            if (uiLayer.style.visibility == "hidden") 
+                uiLayer.style.visibility = "visible";
             document.getElementById("text").innerHTML = "";
             // console.log("nowLine: ", controller.line);
             decoration(controller.scenario.content[controller.line]);   // 装饰器（迫真）预处理
@@ -228,19 +234,27 @@ function delay() {
 
         // 播放声音
         if (controller.scenario.content[controller.line].anime.soundpath != "") {
+
+            // 如果在播放上一句的音频则清除
+            try {
+                let lastPlay = document.getElementById("nowPlay");
+                lastPlay.remove();
+            }
+            catch (error) {
+            }
+
             if (controller.scenario.content[controller.line].anime.repeat == "bgm") {
                 try {
                     let bgm = document.getElementById("bgm");
                     bgm.src = controller.scenario.content[controller.line].anime.soundpath;
+                    bgm.loop = true;
                     bgm.play();
                 } catch (error) {
                     let bgm = document.createElement("audio");
                     bgm.src = controller.scenario.content[controller.line].anime.soundpath;
+                    bgm.loop = true;
                     bgm.id = "bgm";
                     bgm.play();
-                }
-                finally {
-                    
                 }
             }
             else {
@@ -253,10 +267,6 @@ function delay() {
                 sound.play();
             }
         }
-        // 如果ui隐藏，显示ui
-        let uiLayer = document.getElementById("ui");
-        if (uiLayer.style.visibility == "hidden")
-            uiLayer.style.visibility = "visible";
 
         // 添加历史记录
         function addHistory(str) {
@@ -270,13 +280,19 @@ function delay() {
         addHistory(controller.scenario.content[controller.line].text);
 
         // 调用自定义脚本
+        // 最终script以new Fuction(script)()的形式调用，由于不能传参所以在编辑的时候尽量使用全局变量
         if (controller.scenario.content[controller.line].script != "") {
             console.log("script");
             new Function(controller.scenario.content[controller.line].script)();
         }
+
         // 如果文本为空，则自动播放下一句
+        // 这个是为了做动画效果的，比如图片出现平移，多个图片一起出现等等
+        // 原脚本逻辑是每一个内容对于同一项内容只有一种更改（即每个图片更改单独一句）
         if (controller.scenario.content[controller.line].text == '') {
             console.log("continue");
+            // 这里怎么回事呢？
+            // 请看191行的逻辑，因为系统处理脚本很快，完全小于setinversal的50ms，所以第一次LeftClick就会抵消那个……
             leftClick();
             leftClick();
         }
@@ -314,4 +330,22 @@ function delay() {
         if ((event.deltaY < 0) && (document.getElementById("history").style.visibility == "hidden"))
             historyMenu();
     });
+}
+
+
+/**
+ * 存档初始化函数
+ */
+function Save() {
+    let save = document.getElementById("sl");
+    for (let i = 0; i < 4; i++) {
+        let row = document.createElement("div");
+        row.className = "row";
+        let card1 = document.createElement("div");
+        card1.className = "card offset-1 col-4";
+        let card2 = document.createElement("div");
+        card2.className = "card offset-2 col-4";
+        row.appendChild(card1); row.appendChild(card2);
+        save.appendChild(row);
+    }
 }

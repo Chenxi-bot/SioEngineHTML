@@ -333,6 +333,24 @@ function delay() {
 }
 
 
+class SaveController {
+    constructor() {
+        this.bgimage;
+        this.fgimage;
+        this.line;
+        this.text;
+        this.name;
+        this.bgm;
+    }
+}
+
+var sctrl = new SaveController();
+try {
+    sctrl = JSON.parse(document.cookie);
+} catch (error) {
+    console.log(error);
+    sctrl = new SaveController();
+}
 /**
  * 存档初始化函数
  */
@@ -347,5 +365,58 @@ function Save() {
         card2.className = "card offset-2 col-4";
         row.appendChild(card1); row.appendChild(card2);
         save.appendChild(row);
+    }
+}
+
+// 理论上可行
+// 就是图片对象不能JSON.stringify()……
+// 有时间找一下替代方法！
+// 开摆
+
+function saveGame() {
+    sctrl.line = controller.line;
+    sctrl.name = document.getElementById("name").innerHTML;
+    sctrl.text = document.getElementById("text").innerHTML;
+    sctrl.fgimage = document.getElementById("fgimage");
+    sctrl.bgimage= document.getElementById("bgimage");
+
+    try {
+        sctrl.bgm = document.getElementById("bgm");
+    } catch (error) {
+        console.log(error);
+    }
+    
+    try {
+        document.cookie = JSON.stringify(sctrl);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+function loadGame() {
+    try {
+        sctrl = JSON.parse(document.cookie);
+    } catch (error) {
+        console.log(error);
+    }
+    controller.line = sctrl.line;
+    document.getElementById("name").innerHTML = sctrl.name;
+    document.getElementById("text").innerHTML = sctrl.text;
+    function replace(id) {
+        console.log("寻找父元素", id);
+        let parent = document.getElementById(id).parentNode;
+        document.getElementById(id).remove();
+        let child = document.createElement("div");
+        child.id = id;
+        child = sctrl[id];
+        console.log(child);
+        parent.appendChild(child);
+    }
+    replace("bgimage");
+    replace("fgimage");
+    try {
+        document.getElementById("bgm") = sctrl.bgm;
+    } catch (error) {
+        console.log(error);
     }
 }

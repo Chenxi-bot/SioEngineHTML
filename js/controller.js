@@ -318,6 +318,24 @@ function delay() {
 }
 
 
+class SaveController {
+    constructor() {
+        this.bgimage;
+        this.fgimage;
+        this.line;
+        this.text;
+        this.name;
+        this.bgm;
+    }
+}
+
+var sctrl = new SaveController();
+try {
+    sctrl = JSON.parse(document.cookie);
+} catch (error) {
+    console.log(error);
+    sctrl = new SaveController();
+}
 /**
  * 存档初始化函数
  */

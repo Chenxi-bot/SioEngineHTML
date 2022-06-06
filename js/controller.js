@@ -53,23 +53,7 @@ class Controller {
     }
 }
 
-/** 
- * 人物图层，作为子对象方便管理，结果用处并不大，不如不用，早晚有一天把你删了
- */
-class imageLayer {
-
-    constructor(src, name) {
-        this.ele = document.createElement("div");
-        this.img = document.createElement("img");
-        this.ele.appendChild(this.img);
-        this.index = 0;
-        if (src != undefined)
-            this.img.src = src;
-        if (name != undefined) {
-            this.ele.id = name;
-        }
-    }
-}
+// 终于把这东西删了
 
 /**
  * 图层管理器，功能正在完成中
@@ -83,13 +67,14 @@ class imageController {
     // addImage()和deleteImage()可以使用css动画来实现
     // 不过感觉用js写应该比css简单
     addImage(src, posx, posy, name) {
-        let img = new imageLayer(src, name);
+        let img = document.createElement("img");
         let fgimage = document.getElementById("fgimage");
-        fgimage.appendChild(img.ele);
-        img.img.style.position = "absolute";
-        img.img.style.marginLeft = String(posx) + "px";
-        img.img.style.marginTop = String(posy) + "px";
-        img.img.id = name;
+        fgimage.appendChild(img);
+        img.style.position = "absolute";
+        img.style.marginLeft = String(posx) + "px";
+        img.style.marginTop = String(posy) + "px";
+        img.id = name;
+        img.alt = name;
         return ("图层 " + name + " 已创建，" + "路径：" + src);
     }
 
@@ -120,16 +105,16 @@ class imageController {
         if (src == undefined)
             return this.deleteImage(name);
 
-        ele.getElementsByTagName("img")[0].src = src;
+        ele.src = src;
 
         if (time != undefined) {
             // TODO: 动画，有时间再写，折磨ing
         }
         // 检查是否有pos参数传入，没有就不变
         if (posx != undefined)
-            ele.getElementsByTagName("img")[0].style.marginLeft = String(posx) + "px";
+            ele.style.marginLeft = String(posx) + "px";
         if (posy != undefined)
-            ele.getElementsByTagName("img")[0].marginTop = String(posy) + "px"
+            ele.style.marginTop = String(posy) + "px"
 
         return ("图层 " + name + " 已替换，" + "路径：" + src);
     }
@@ -347,5 +332,79 @@ function Save() {
         card2.className = "card offset-2 col-4";
         row.appendChild(card1); row.appendChild(card2);
         save.appendChild(row);
+    }
+}
+
+class ImageCache {
+    constructor(obj) {
+        this.src = obj.src;
+        this.id = obj.id;
+        this.style = obj.style;
+    }
+}
+
+class SaveController {
+    constructor() {
+        this.line;
+        this.name;
+        this.text;
+        this.bgm;
+        this.bgimage;
+        this.fgimage = [];
+    }
+}
+
+var sctrl = new SaveController();
+function saveGame() {
+    sctrl.line = controller.line;
+    sctrl.name = document.getElementById("name").innerHTML;
+    sctrl.text = document.getElementById("text").innerHTML;
+    let bgimage = document.getElementById("bgimage").getElementsByTagName("img")[0];
+    sctrl.bgimage = new ImageCache(bgimage);
+    let fgimages = document.getElementById("fgimage").getElementsByTagName("img");
+    for (let i = 0; i < fgimages.length; i++) {
+        sctrl.fgimage.push(new ImageCache(fgimages[i]));
+    }
+    try {
+        document.cookie = JSON.stringify(sctrl);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+function loadGame() {
+    try {
+        sctrl = JSON.parse(document.cookie);
+    } catch (error) {
+        console.log(error);
+    }
+    controller.line = sctrl.line;
+    document.getElementById("name").innerHTML = sctrl.name;
+    document.getElementById("text").innerHTML = sctrl.text;
+
+    function loadImageCache(cache) {
+        let self = document.createElement("img");
+        self.src = cache.src;
+        self.style = cache.style;
+        self.id = cache.id;
+        return self;
+    }
+    try {
+        let bgimage = document.getElementById("bgimage");
+        let bg = bgimage.getElementsByTagName("img")[0];
+        bg.src = sctrl.bgimage.src;
+    } catch (error) {
+        console.log("不存在背景图片");
+        let bgimage = loadImageCache(sctrl.bgimage);
+        document.getElementById("bgimage").appendChild(bgimage);
+    }
+    
+    let fgimage = document.getElementById("fgimage");
+    // FIXME: 这里要记得修改，css无法直接被stringify，所以就很奇怪
+    for (let i = 0; i < sctrl.fgimage.length; i++) {
+        if (document.getElementById(sctrl.fgimage[i].id)) {
+            document.getElementById(sctrl.fgimage[i].id).remove();
+        } 
+        fgimage.appendChild(loadImageCache(sctrl.fgimage[i]));
     }
 }

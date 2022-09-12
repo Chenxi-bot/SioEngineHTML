@@ -53,8 +53,6 @@ class Controller {
     }
 }
 
-// 终于把这东西删了
-
 /**
  * 图层管理器，功能正在完成中
  */
@@ -133,7 +131,36 @@ function delay() {
      @function 延迟函数集合
      @description 这个至于什么时候调用随着项目推进还要改一改，但总而言之就是全部加载完毕以后再调用就是了
      */
-    function click_anime() {    // 播放动画，每个字逐个显示出来
+
+    document.body.addEventListener("click", leftClick);    // 监听左键动作
+
+    function rightClick() {  // 标准右键动作，隐藏ui和文字层，同时取消默认菜单
+        if (document.getElementById("history").style.visibility == "visible") {
+            document.getElementById("history").style.visibility = "hidden";
+            return false;
+        }
+        let uiLayer = document.getElementById("ui");
+        if (uiLayer.style.visibility == "visible")
+            uiLayer.style.visibility = "hidden";
+        else
+            uiLayer.style.visibility = "visible";
+        return false;
+    };
+
+    document.oncontextmenu = rightClick;
+
+    document.addEventListener("wheel", function (event) {   // 监听滑轮动作，向下相当于鼠标左键，向上召唤历史菜单
+        console.log(event.deltaY);
+        console.log(document.getElementById("history").style.visibility == "hidden");
+        if (event.deltaY > 0)
+            leftClick();
+        if ((event.deltaY < 0) && (document.getElementById("history").style.visibility == "hidden"))
+            historyMenu();
+    });
+}
+
+class GameManager {
+    static click_anime() {    // 播放动画，每个字逐个显示出来
         let info = "";
         if (arguments != undefined)
             info = arguments[0];
@@ -150,7 +177,8 @@ function delay() {
         }, 50);
     }
 
-    function decoration() { // 装饰函数，用于特殊的装饰，比如人名/语句的引号什么的
+
+    static decoration() { // 装饰函数，用于特殊的装饰，比如人名/语句的引号什么的
         if (controller.decoration && (arguments[0].name != "")) {
             arguments[0].name = "【" + arguments[0].name + "】";
             arguments[0].text = "『" + arguments[0].text + "』";
@@ -158,7 +186,8 @@ function delay() {
         else return arguments[0];
     }
 
-    function leftClick() {   // 动画播放
+    // TODO: 这里需要修改，左键逻辑层
+    static leftClick() {   // 动画播放
 
         // 如果在看历史记录取消点击动作
         if (document.getElementById("history").style.visibility == "visible") {
@@ -179,7 +208,7 @@ function delay() {
             document.getElementById("text").innerHTML = controller.scenario.content[controller.line].text;
             return;
         }
-        
+
         // 如果ui隐藏，显示ui；并且取消当前左键动作
         let uiLayer = document.getElementById("ui");
         if (controller.line >= 0) {
@@ -194,7 +223,7 @@ function delay() {
         // 先将清除文字，然后执行播放动画函数（动画为异步），同时替换名字（如果有的话）
         if (controller.line++ < controller.scenario.length) {
             // FIXME: 让ui显示，但是不知道出了什么奇怪的逻辑错误只能这里再写一遍
-            if (uiLayer.style.visibility == "hidden") 
+            if (uiLayer.style.visibility == "hidden")
                 uiLayer.style.visibility = "visible";
             document.getElementById("text").innerHTML = "";
             // console.log("nowLine: ", controller.line);
@@ -283,37 +312,155 @@ function delay() {
         }
     }
 
-    function historyMenu() {    // 召唤历史记录
+
+    static historyMenu() {    // 召唤历史记录
         // FIXME: 目前有一个bug，就是调出历史记录后鼠标需要动一下，不然滑轮操作是不能使用的
         document.getElementById("history").style.visibility = "visible";    // 使图层可见
         document.getElementById("history").scrollTop = document.getElementById("history").offsetHeight;  // 使对话在最底部
         controller.historyEnd = document.getElementById("history").scrollTop;
     }
-
-    document.body.addEventListener("click", leftClick);    // 监听左键动作
-
-    function rightClick() {  // 标准右键动作，隐藏ui和文字层，同时取消默认菜单
-        if (document.getElementById("history").style.visibility == "visible") {
-            document.getElementById("history").style.visibility = "hidden";
-            return false;
-        }
-        let uiLayer = document.getElementById("ui");
-        if (uiLayer.style.visibility == "visible")
-            uiLayer.style.visibility = "hidden";
-        else
-            uiLayer.style.visibility = "visible";
-        return false;
-    };
-
-    document.oncontextmenu = rightClick;
-
-    document.addEventListener("wheel", function (event) {   // 监听滑轮动作，向下相当于鼠标左键，向上召唤历史菜单
-        console.log(event.deltaY);
-        console.log(document.getElementById("history").style.visibility == "hidden");
-        if (event.deltaY > 0)
-            leftClick();
-        if ((event.deltaY < 0) && (document.getElementById("history").style.visibility == "hidden"))
-            historyMenu();
-    });
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 以下是存档内容，重构内容不多
+class SaveController {
+    constructor() {
+        this.bgimage;
+        this.fgimage;
+        this.line;
+        this.text;
+        this.name;
+        this.bgm;
+    }
+}
+
+var sctrl = new SaveController();
+try {
+    sctrl = JSON.parse(document.cookie);
+} catch (error) {
+    console.log(error);
+    sctrl = new SaveController();
+}
+/**
+ * 存档初始化函数
+ */
+function Save() {
+    let save = document.getElementById("sl");
+    for (let i = 0; i < 4; i++) {
+        let row = document.createElement("div");
+        row.className = "row";
+        let card1 = document.createElement("div");
+        card1.className = "card offset-1 col-4";
+        let card2 = document.createElement("div");
+        card2.className = "card offset-2 col-4";
+        row.appendChild(card1); row.appendChild(card2);
+        save.appendChild(row);
+    }
+}
+
+class ImageCache {
+    constructor(obj) {
+        this.src = obj.src;
+        this.id = obj.id;
+        this.style = obj.style;
+    }
+}
+
+class SaveController {
+    constructor() {
+        this.line;
+        this.name;
+        this.text;
+        this.bgm;
+        this.bgimage;
+        this.fgimage = [];
+    }
+}
+
+var sctrl = new SaveController();
+function saveGame() {
+    sctrl.line = controller.line;
+    sctrl.name = document.getElementById("name").innerHTML;
+    sctrl.text = document.getElementById("text").innerHTML;
+    let bgimage = document.getElementById("bgimage").getElementsByTagName("img")[0];
+    sctrl.bgimage = new ImageCache(bgimage);
+    let fgimages = document.getElementById("fgimage").getElementsByTagName("img");
+    for (let i = 0; i < fgimages.length; i++) {
+        sctrl.fgimage.push(new ImageCache(fgimages[i]));
+    }
+    try {
+        document.cookie = JSON.stringify(sctrl);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+function loadGame() {
+    try {
+        sctrl = JSON.parse(document.cookie);
+    } catch (error) {
+        console.log(error);
+    }
+    controller.line = sctrl.line;
+    document.getElementById("name").innerHTML = sctrl.name;
+    document.getElementById("text").innerHTML = sctrl.text;
+
+    function loadImageCache(cache) {
+        let self = document.createElement("img");
+        self.src = cache.src;
+        self.style = cache.style;
+        self.id = cache.id;
+        return self;
+    }
+    try {
+        let bgimage = document.getElementById("bgimage");
+        let bg = bgimage.getElementsByTagName("img")[0];
+        bg.src = sctrl.bgimage.src;
+    } catch (error) {
+        console.log("不存在背景图片");
+        let bgimage = loadImageCache(sctrl.bgimage);
+        document.getElementById("bgimage").appendChild(bgimage);
+    }
+
+    let fgimage = document.getElementById("fgimage");
+    // FIXME: 这里要记得修改，css无法直接被stringify，所以就很奇怪
+    for (let i = 0; i < sctrl.fgimage.length; i++) {
+        if (document.getElementById(sctrl.fgimage[i].id)) {
+            document.getElementById(sctrl.fgimage[i].id).remove();
+        }
+        fgimage.appendChild(loadImageCache(sctrl.fgimage[i]));
+    }
+}

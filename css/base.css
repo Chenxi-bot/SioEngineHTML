@@ -68,26 +68,3 @@ body {
 .already {
     color: yellow;
 }
-
-#sl > .row {
-    height: 25%;
-}
-
-#sl1 {
-    position: absolute;
-    top: 0%;
-}
-
-#sl2 {
-    position: absolute;
-    top: 25%;
-}
-#sl3 {
-    position: absolute;
-    top: 50%;
-}
-
-#sl4 {
-    position: absolute;
-    top: 75%;
-}
